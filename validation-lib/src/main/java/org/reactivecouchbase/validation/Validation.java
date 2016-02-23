@@ -22,11 +22,11 @@ public abstract class Validation<T, E> {
     public abstract Boolean isSuccess();
 
     public static <T, E> Validation<T, E> success(T value) {
-        return new ValidationSuccess<T, E>(value);
+        return new ValidationSuccess<>(value);
     }
 
     public static <T, E> Validation<T, E> failure(List<E> errors) {
-        return new ValidationFailure<T, E>(errors);
+        return new ValidationFailure<>(errors);
     }
 
     @SuppressWarnings("unchecked")
@@ -170,7 +170,9 @@ public abstract class Validation<T, E> {
         if (validation.isSuccess()) {
             return validation;
         }
-        return Validation.failure(validation.getFailures().stream().map(input -> new ValidationError(path, input.message)).collect(Collectors.toList()));
+        return Validation.failure(validation.getFailures()
+                .stream().map(input -> new ValidationError(path, input.message))
+                .collect(Collectors.toList()));
     }
 
     private static <T, E> Validation<T, E> populateErrs(Validation<T, E> finalValidation, Validation<?, E>... validations) {
@@ -191,7 +193,7 @@ public abstract class Validation<T, E> {
     }
 
     public static <T, E> ContextualValidation<T, E> globalFor(T input) {
-        return new ContextualValidation<T, E>(input);
+        return new ContextualValidation<>(input);
     }
 
     public static <T, E> ContextualValidation<T, E> globalFor(T input, Class<E> clazz) {

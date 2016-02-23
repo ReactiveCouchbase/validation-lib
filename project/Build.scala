@@ -32,9 +32,8 @@ object ApplicationBuild extends Build {
     .settings(
       resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
       libraryDependencies += "org.reactivecouchbase" % "common-lib" % "1.0-SNAPSHOT",
-      libraryDependencies += "org.reactivecouchbase" % "json-lib" % "1.0-SNAPSHOT",
       libraryDependencies += "joda-time" % "joda-time" % "2.9.2",
-      libraryDependencies += "org.assertj" % "assertj-core" % "3.3.0",
+      libraryDependencies += "org.assertj" % "assertj-core" % "3.3.0" % "test",
       libraryDependencies += "junit" % "junit" % "4.11" % "test",
       libraryDependencies += "com.novocode" % "junit-interface" % "0.9" % "test",
       organization := "org.reactivecouchbase",

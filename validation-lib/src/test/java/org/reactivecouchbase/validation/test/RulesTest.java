@@ -1,7 +1,5 @@
 package org.reactivecouchbase.validation.test;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.reactivecouchbase.validation.Rules;
 
@@ -101,119 +99,79 @@ public class RulesTest {
         assertThat(Rules.minBD(BigDecimal.ONE).validate(BigDecimal.ZERO).isSuccess()).isFalse();
     }
 
-    /**
-     * Method: maxBD(final BigDecimal value)
-     */
     @Test
     public void testMaxBD() throws Exception {
         assertThat(Rules.maxBD(BigDecimal.ONE).validate(BigDecimal.TEN).isSuccess()).isFalse();
         assertThat(Rules.maxBD(BigDecimal.ONE).validate(BigDecimal.ZERO).isSuccess()).isTrue();
     }
 
-    /**
-     * Method: minBI(final BigInteger value)
-     */
     @Test
     public void testMinBI() throws Exception {
         assertThat(Rules.minBI(BigInteger.ONE).validate(BigInteger.TEN).isSuccess()).isTrue();
         assertThat(Rules.minBI(BigInteger.ONE).validate(BigInteger.ZERO).isSuccess()).isFalse();
     }
 
-    /**
-     * Method: maxBI(final BigInteger value)
-     */
     @Test
     public void testMaxBI() throws Exception {
         assertThat(Rules.maxBI(BigInteger.ONE).validate(BigInteger.TEN).isSuccess()).isFalse();
         assertThat(Rules.maxBI(BigInteger.ONE).validate(BigInteger.ZERO).isSuccess()).isTrue();
     }
 
-    /**
-     * Method: ignore()
-     */
     @Test
     public void testIgnore() throws Exception {
-        assertThat(Rules.ignore().validate("mlkmlk").isSuccess()).isTrue();
+        assertThat(Rules.ignore().validate("anything").isSuccess()).isTrue();
         assertThat(Rules.ignore().validate(123).isSuccess()).isTrue();
         assertThat(Rules.ignore().validate(null).isSuccess()).isTrue();
     }
 
-    /**
-     * Method: notNull()
-     */
     @Test
     public void testNotNull() throws Exception {
         assertThat(Rules.notNull().validate(null).isSuccess()).isFalse();
         assertThat(Rules.notNull().validate("").isSuccess()).isTrue();
     }
 
-    /**
-     * Method: isNull()
-     */
     @Test
     public void testIsNull() throws Exception {
         assertThat(Rules.isNull().validate(null).isSuccess()).isTrue();
         assertThat(Rules.isNull().validate("").isSuccess()).isFalse();
     }
 
-    /**
-     * Method: equalsTo(final I to)
-     */
     @Test
     public void testEqualsTo() throws Exception {
         assertThat(Rules.equalsTo("hello").validate("hello").isSuccess()).isTrue();
         assertThat(Rules.equalsTo("hello").validate("helllo").isSuccess()).isFalse();
     }
 
-    /**
-     * Method: notEmptyStr()
-     */
     @Test
     public void testNotEmptyStr() throws Exception {
         assertThat(Rules.notEmptyStr().validate("qsd").isSuccess()).isTrue();
         assertThat(Rules.notEmptyStr().validate("").isSuccess()).isFalse();
     }
 
-    /**
-     * Method: emptyStr()
-     */
     @Test
     public void testEmptyStr() throws Exception {
         assertThat(Rules.emptyStr().validate("").isSuccess()).isTrue();
         assertThat(Rules.emptyStr().validate("dsq").isSuccess()).isFalse();
     }
 
-    /**
-     * Method: notEmpty()
-     */
     @Test
     public void testNotEmpty() throws Exception {
         assertThat(Rules.notEmpty().validate(new ArrayList<>()).isSuccess()).isFalse();
         assertThat(Rules.notEmpty().validate(Collections.singletonList("")).isSuccess()).isTrue();
     }
 
-    /**
-     * Method: isEmpty()
-     */
     @Test
     public void testIsEmpty() throws Exception {
         assertThat(Rules.isEmpty().validate(new ArrayList<>()).isSuccess()).isTrue();
         assertThat(Rules.isEmpty().validate(Collections.singletonList("")).isSuccess()).isFalse();
     }
 
-    /**
-     * Method: minLength(final int size)
-     */
     @Test
     public void testMinLength() throws Exception {
-        //assertThat(Rules.minLength(3).validate("ooo").isSuccess()).isTrue();
         assertThat(Rules.minLength(3).validate("oooO").isSuccess()).isTrue();
         assertThat(Rules.minLength(3).validate("oo").isSuccess()).isFalse();
     }
 
-    /**
-     * Method: maxLength(final int size)
-     */
     @Test
     public void testMaxLength() throws Exception {
         assertThat(Rules.maxLength(3).validate("oo").isSuccess()).isTrue();
@@ -221,34 +179,22 @@ public class RulesTest {
         assertThat(Rules.maxLength(3).validate("ooOo").isSuccess()).isFalse();
     }
 
-    /**
-     * Method: date(final String pattern)
-     */
     @Test
     public void testDate() throws Exception {
         assertThat(Rules.date("dd/MM/yyyy").validate("12/12/2012").isSuccess()).isTrue();
     }
 
-    /**
-     * Method: dateTime(final String pattern)
-     */
     @Test
     public void testDateTime() throws Exception {
         assertThat(Rules.dateTime("dd/MM/yyyy").validate("12/12/2012").isSuccess()).isTrue();
     }
 
-    /**
-     * Method: greaterThan(final int value)
-     */
     @Test
     public void testGreaterThan() throws Exception {
         assertThat(Rules.greaterThan(3).validate(4).isSuccess()).isTrue();
         assertThat(Rules.greaterThan(3).validate(2).isSuccess()).isFalse();
     }
 
-    /**
-     * Method: lesserThan(final int value)
-     */
     @Test
     public void testLesserThan() throws Exception {
         assertThat(Rules.lesserThan(3).validate(2).isSuccess()).isTrue();

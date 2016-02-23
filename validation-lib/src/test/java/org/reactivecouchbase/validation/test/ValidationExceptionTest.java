@@ -1,8 +1,7 @@
 package org.reactivecouchbase.validation.test;
 
-import org.junit.Test;
 import org.junit.Before;
-import org.junit.After;
+import org.junit.Test;
 import org.reactivecouchbase.validation.*;
 
 import static org.assertj.core.api.Assertions.assertThat;

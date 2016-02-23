@@ -2,20 +2,21 @@ package org.reactivecouchbase.validation;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.reactivecouchbase.functional.Unit;
-import org.reactivecouchbase.json.mapping.ReaderConstraints;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import static org.reactivecouchbase.validation.Rule.validateWith;
 
 public class Rules {
+
+    public static final String EMAIL_PATTERN = "[\\w!#$%&'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[a-zA-Z0-9](?:[\\w-]*[\\w])?";
+    public static final String URL_PATTERN = "^(http|https|ftp)\\://[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\\-\\._\\?\\,\\'/\\\\\\+&amp;%\\$#\\=~\\!])*$";
+    public static final String PHONE_PATTERN = "^([\\+][0-9]{1,3}([ \\.\\-]))?([\\(]{1}[0-9]{2,6}[\\)])?([0-9 \\.\\-/]{3,20})((x|ext|extension)[ ]?[0-9]{1,4})?$";
 
     private Rules() {
     }
@@ -105,24 +106,19 @@ public class Rules {
     }
 
     public static Rule<String, String> email() {
-        return pattern("The specified value is not an email address", ReaderConstraints.EMAIL_PATTERN);
+        return pattern("The specified value is not an email address", EMAIL_PATTERN);
     }
 
     public static Rule<String, String> url() {
-        return pattern("The specified value is not an email address", ReaderConstraints.URL_PATTERN);
+        return pattern("The specified value is not an email address", URL_PATTERN);
     }
 
     public static Rule<String, String> phone() {
-        return pattern("The specified value is not an email address", ReaderConstraints.PHONE_PATTERN);
+        return pattern("The specified value is not an email address", PHONE_PATTERN);
     }
 
     public static Rule<String, String> pattern(final String error, final String p) {
-        return validateWith(error, new Predicate<String>() {
-            @Override
-            public boolean test(String input) {
-                return input != null && input.matches(p);
-            }
-        });
+        return validateWith(error, input -> input != null && input.matches(p));
     }
 
     public static Rule<String, String> pattern(final String p) {
@@ -131,129 +127,59 @@ public class Rules {
     }
 
     public static Rule<Integer, Integer> minI(final Integer value) {
-        return validateWith("The specified value is smaller than " + value, new Predicate<Integer>() {
-            @Override
-            public boolean test(Integer input) {
-                return input != null && input > value;
-            }
-        });
+        return validateWith("The specified value is smaller than " + value, input -> input != null && input > value);
     }
 
     public static Rule<Integer, Integer> maxI(final Integer value) {
-        return validateWith("The specified value is bigger than " + value, new Predicate<Integer>() {
-            @Override
-            public boolean test(Integer input) {
-                return input != null && input < value;
-            }
-        });
+        return validateWith("The specified value is bigger than " + value, input -> input != null && input < value);
     }
 
     public static Rule<Long, Long> minL(final Long value) {
-        return validateWith("The specified value is smaller than " + value, new Predicate<Long>() {
-            @Override
-            public boolean test(Long input) {
-                return input != null && input > value;
-            }
-        });
+        return validateWith("The specified value is smaller than " + value, input -> input != null && input > value);
     }
 
     public static Rule<Long, Long> maxL(final Long value) {
-        return validateWith("The specified value is bigger than " + value, new Predicate<Long>() {
-            @Override
-            public boolean test(Long input) {
-                return input != null && input < value;
-            }
-        });
+        return validateWith("The specified value is bigger than " + value, input -> input != null && input < value);
     }
 
     public static Rule<Double, Double> minD(final Double value) {
-        return validateWith("The specified value is smaller than " + value, new Predicate<Double>() {
-            @Override
-            public boolean test(Double input) {
-                return input != null && input > value;
-            }
-        });
+        return validateWith("The specified value is smaller than " + value, input -> input != null && input > value);
     }
 
     public static Rule<Double, Double> maxD(final Double value) {
-        return validateWith("The specified value is bigger than " + value, new Predicate<Double>() {
-            @Override
-            public boolean test(Double input) {
-                return input != null && input < value;
-            }
-        });
+        return validateWith("The specified value is bigger than " + value, input -> input != null && input < value);
     }
 
     public static Rule<Short, Short> minS(final Short value) {
-        return validateWith("The specified value is smaller than " + value, new Predicate<Short>() {
-            @Override
-            public boolean test(Short input) {
-                return input != null && input > value;
-            }
-        });
+        return validateWith("The specified value is smaller than " + value, input -> input != null && input > value);
     }
 
     public static Rule<Short, Short> maxS(final Short value) {
-        return validateWith("The specified value is bigger than " + value, new Predicate<Short>() {
-            @Override
-            public boolean test(Short input) {
-                return input != null && input < value;
-            }
-        });
+        return validateWith("The specified value is bigger than " + value, input -> input != null && input < value);
     }
 
     public static Rule<Float, Float> minF(final Float value) {
-        return validateWith("The specified value is smaller than " + value, new Predicate<Float>() {
-            @Override
-            public boolean test(Float input) {
-                return input != null && input > value;
-            }
-        });
+        return validateWith("The specified value is smaller than " + value, input -> input != null && input > value);
     }
 
     public static Rule<Float, Float> maxF(final Float value) {
-        return validateWith("The specified value is bigger than " + value, new Predicate<Float>() {
-            @Override
-            public boolean test(Float input) {
-                return input != null && input < value;
-            }
-        });
+        return validateWith("The specified value is bigger than " + value, input -> input != null && input < value);
     }
 
     public static Rule<BigDecimal, BigDecimal> minBD(final BigDecimal value) {
-        return validateWith("The specified value is smaller than " + value, new Predicate<BigDecimal>() {
-            @Override
-            public boolean test(BigDecimal input) {
-                return input != null && input.compareTo(value) > 0;
-            }
-        });
+        return validateWith("The specified value is smaller than " + value, input -> input != null && input.compareTo(value) > 0);
     }
 
     public static Rule<BigDecimal, BigDecimal> maxBD(final BigDecimal value) {
-        return validateWith("The specified value is bigger than " + value, new Predicate<BigDecimal>() {
-            @Override
-            public boolean test(BigDecimal input) {
-                return input != null && input.compareTo(value) < 0;
-            }
-        });
+        return validateWith("The specified value is bigger than " + value, input -> input != null && input.compareTo(value) < 0);
     }
 
     public static Rule<BigInteger, BigInteger> minBI(final BigInteger value) {
-        return validateWith("The specified value is smaller than " + value, new Predicate<BigInteger>() {
-            @Override
-            public boolean test(BigInteger input) {
-                return input != null && input.compareTo(value) > 0;
-            }
-        });
+        return validateWith("The specified value is smaller than " + value, input -> input != null && input.compareTo(value) > 0);
     }
 
     public static Rule<BigInteger, BigInteger> maxBI(final BigInteger value) {
-        return validateWith("The specified value is bigger than " + value, new Predicate<BigInteger>() {
-            @Override
-            public boolean test(BigInteger input) {
-                return input != null && input.compareTo(value) < 0;
-            }
-        });
+        return validateWith("The specified value is bigger than " + value, input -> input != null && input.compareTo(value) < 0);
     }
 
     public static <I> Rule<I, I> ignore() {
@@ -266,12 +192,7 @@ public class Rules {
     }
 
     public static <I> Rule<I, I> notNull() {
-        return validateWith("The specified value is null", new Predicate<I>() {
-            @Override
-            public boolean test(I input) {
-                return input != null;
-            }
-        });
+        return validateWith("The specified value is null", input -> input != null);
     }
 
     public static <I> Rule<I, I> isNull() {
@@ -287,72 +208,36 @@ public class Rules {
     }
 
     public static <I> Rule<I, I> equalsTo(final I to) {
-        return validateWith("The specified value is not equals to reference object (" + to.toString() + ")", new Predicate<I>() {
-            @Override
-            public boolean test(I input) {
-                return input != null && input.equals(to);
-            }
-        });
+        return validateWith("The specified value is not equals to reference object (" + to.toString() + ")", input -> input != null && input.equals(to));
     }
 
     public static Rule<String, String> notEmptyStr() {
-        return validateWith("The specified value is an empty String", new Predicate<String>() {
-            @Override
-            public boolean test(String input) {
-                return input != null && !input.isEmpty();
-            }
-        });
+        return validateWith("The specified value is an empty String", input -> input != null && !input.isEmpty());
     }
 
     public static Rule<String, String> emptyStr() {
-        return validateWith("The specified value is not an empty String", new Predicate<String>() {
-            @Override
-            public boolean test(String input) {
-                return input != null && input.isEmpty();
-            }
-        });
+        return validateWith("The specified value is not an empty String", input -> input != null && input.isEmpty());
     }
 
     public static <I extends Collection> Rule<I, I> notEmpty() {
-        return validateWith("The specified value is an empty collection", new Predicate<I>() {
-            @Override
-            public boolean test(I input) {
-                return input != null && !input.isEmpty();
-            }
-        });
+        return validateWith("The specified value is an empty collection", input -> input != null && !input.isEmpty());
     }
 
     public static <I extends Collection> Rule<I, I> isEmpty() {
-        return validateWith("The specified value is not an empty collection", new Predicate<I>() {
-            @Override
-            public boolean test(I input) {
-                return input != null && input.isEmpty();
-            }
-        });
+        return validateWith("The specified value is not an empty collection", input -> input != null && input.isEmpty());
     }
 
     public static Rule<String, String> minLength(final int size) {
-        return validateWith(new Predicate<String>() {
-            @Override
-            public boolean test(String input) {
-                return input != null && input.length() >= size;
-            }
-        });
+        return validateWith(input -> input != null && input.length() >= size);
     }
 
     public static Rule<String, String> maxLength(final int size) {
-        return validateWith(new Predicate<String>() {
-            @Override
-            public boolean test(String input) {
-                return input != null && input.length() <= size;
-            }
-        });
+        return validateWith(input -> input != null && input.length() <= size);
     }
 
     public static Rule<String, Date> date(final String pattern) {
         return new Rule<String, Date>() {
             SimpleDateFormat df = new SimpleDateFormat(pattern);
-
             @Override
             public Validation<Date, ValidationError> validate(String in) {
                 if (in == null) {
@@ -384,21 +269,11 @@ public class Rules {
     }
 
     public static Rule<Integer, Integer> greaterThan(final int value) {
-        return validateWith("The specified value is lesser than " + value, new Predicate<Integer>() {
-            @Override
-            public boolean test(Integer input) {
-                return input > value;
-            }
-        });
+        return validateWith("The specified value is lesser than " + value, input -> input > value);
     }
 
     public static Rule<Integer, Integer> lesserThan(final int value) {
-        return validateWith("The specified value is greater than " + value, new Predicate<Integer>() {
-            @Override
-            public boolean test(Integer input) {
-                return input < value;
-            }
-        });
+        return validateWith("The specified value is greater than " + value, input -> input < value);
     }
 
     public static Rule<String, String> mandatory() {

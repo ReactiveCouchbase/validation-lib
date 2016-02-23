@@ -2,12 +2,9 @@ package org.reactivecouchbase.validation.test;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 import org.reactivecouchbase.validation.*;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,12 +48,7 @@ public class RuleTest {
 
     @Test
     public void testFlatMap() throws Exception {
-        assertThat(rule.validate("123").flatMap(new Function<Integer, Validation<String, ValidationError>>() {
-            @Override
-            public Validation<String, ValidationError> apply(Integer input) {
-                return Validation.success(input.toString());
-            }
-        }).get()).isEqualTo("123");
+        assertThat(rule.validate("123").flatMap(input -> Validation.success(input.toString())).get()).isEqualTo("123");
     }
 
     @Test
@@ -83,12 +75,9 @@ public class RuleTest {
 
     @Test
     public void testRepathF() throws Exception {
-        for (List<ValidationError> errors : rule.combine(Rules.<String, Integer>fail()).repath(new Function<Paths.Path, Paths.Path>() {
-            @Override
-            public Paths.Path apply(Paths.Path input) {
-                assertThat(input.toString()).isEqualTo("/");
-                return Paths.Root.field("blah");
-            }
+        for (List<ValidationError> errors : rule.combine(Rules.<String, Integer>fail()).repath(input -> {
+            assertThat(input.toString()).isEqualTo("/");
+            return Paths.Root.field("blah");
         }).validate("123").onFailure()) {
             for (ValidationError error : errors) {
                 assertThat(error.path).isNotNull();
@@ -156,15 +145,12 @@ public class RuleTest {
 
     @Test
     public void testValidateWithForErrorMessagePredicate() throws Exception {
-        Rule<String, String> r = Rule.validateWith("blah", new Predicate<String>() {
-            @Override
-            public boolean test(String input) {
-                try {
-                    Integer.valueOf(input);
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
+        Rule<String, String> r = Rule.validateWith("blah", input -> {
+            try {
+                Integer.valueOf(input);
+                return true;
+            } catch (Exception e) {
+                return false;
             }
         });
         assertThat(r.validate("123").isSuccess()).isTrue();

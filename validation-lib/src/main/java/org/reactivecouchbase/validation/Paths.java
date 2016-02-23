@@ -146,19 +146,19 @@ public class Paths {
         }
 
         public Path andThen(int index) {
-            List<PathNode> p = new ArrayList<PathNode>(path);
+            List<PathNode> p = new ArrayList<>(path);
             p.add(new IndexPathNode(index));
             return new Path(p);
         }
 
         public Path andThen(String key) {
-            List<PathNode> p = new ArrayList<PathNode>(path);
+            List<PathNode> p = new ArrayList<>(path);
             p.add(new KeyPathNode(key));
             return new Path(p);
         }
 
         public Path compose(Path other) {
-            List<PathNode> p = new ArrayList<PathNode>(path);
+            List<PathNode> p = new ArrayList<>(path);
             p.addAll(other.path);
             return new Path(p);
         }

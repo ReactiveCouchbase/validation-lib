@@ -105,9 +105,7 @@ public class ValidationTest {
         List<ValidationError> errors = entityValidator.validate(new Entity("Jane Doe", 100, "john.doe@com")).onFailure().get();
         assertThat(errors.size()).isEqualTo(3);
         System.out.println("--------------------------");
-        for (ValidationError err : errors) {
-            System.out.println(err);
-        }
+        errors.forEach(System.out::println);
     }
 
     @Test @SuppressWarnings("unchecked")
@@ -154,9 +152,7 @@ public class ValidationTest {
         List<ValidationError> errors = entityValidator.validate(new Entity("Jane Doe", 100, "john.doe@com")).onFailure().get();
         assertThat(errors.size()).isEqualTo(3);
         System.out.println("--------------------------");
-        for (ValidationError err : errors) {
-            System.out.println(err);
-        }
+        errors.forEach(System.out::println);
     }
 
     @Test
@@ -206,8 +202,6 @@ public class ValidationTest {
         List<ValidationError> errors = entityValidator.validate(new Entity("Jane Doe", 100, "john.doe@com")).onFailure().get();
         assertThat(errors.size()).isEqualTo(1);
         System.out.println("--------------------------");
-        for (ValidationError err : errors) {
-            System.out.println(err);
-        }
+        errors.forEach(System.out::println);
     }
 }
