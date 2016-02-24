@@ -6,6 +6,10 @@ import org.joda.time.format.DateTimeFormat;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -261,6 +265,54 @@ public class Rules {
                 }
                 try {
                     return Validation.success(DateTime.parse(in, DateTimeFormat.forPattern(pattern)));
+                } catch (Exception e) {
+                    return Validation.failure(new ValidationError(e));
+                }
+            }
+        };
+    }
+
+    public static Rule<String, LocalDate> localDate(final String pattern) {
+        return new Rule<String, LocalDate>() {
+            @Override
+            public Validation<LocalDate, ValidationError> validate(String in) {
+                if (in == null) {
+                    return Validation.failure(new ValidationError("Input can't be null"));
+                }
+                try {
+                    return Validation.success(LocalDate.from(DateTimeFormatter.ofPattern(pattern).parse(in)));
+                } catch (Exception e) {
+                    return Validation.failure(new ValidationError(e));
+                }
+            }
+        };
+    }
+
+    public static Rule<String, LocalTime> localTime(final String pattern) {
+        return new Rule<String, LocalTime>() {
+            @Override
+            public Validation<LocalTime, ValidationError> validate(String in) {
+                if (in == null) {
+                    return Validation.failure(new ValidationError("Input can't be null"));
+                }
+                try {
+                    return Validation.success(LocalTime.from(DateTimeFormatter.ofPattern(pattern).parse(in)));
+                } catch (Exception e) {
+                    return Validation.failure(new ValidationError(e));
+                }
+            }
+        };
+    }
+
+    public static Rule<String, LocalDateTime> localDateTime(final String pattern) {
+        return new Rule<String, LocalDateTime>() {
+            @Override
+            public Validation<LocalDateTime, ValidationError> validate(String in) {
+                if (in == null) {
+                    return Validation.failure(new ValidationError("Input can't be null"));
+                }
+                try {
+                    return Validation.success(LocalDateTime.from(DateTimeFormatter.ofPattern(pattern).parse(in)));
                 } catch (Exception e) {
                     return Validation.failure(new ValidationError(e));
                 }
