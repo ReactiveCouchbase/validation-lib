@@ -1,12 +1,12 @@
 package org.reactivecouchbase.validation;
 
-import org.reactivecouchbase.functional.Action;
 import org.reactivecouchbase.functional.Option;
 import org.reactivecouchbase.functional.Unit;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -139,9 +139,9 @@ public abstract class Validation<T, E> {
         }
     }
 
-    public void forEach(Action<T> function) {
+    public void forEach(Consumer<T> function) {
         if (isSuccess()) {
-            function.apply(get());
+            function.accept(get());
         }
     }
 
