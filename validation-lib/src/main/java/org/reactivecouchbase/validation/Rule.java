@@ -51,7 +51,7 @@ public abstract class Rule<I, O> implements RuleLike<I, O> {
         return new Rule<I, B>() {
             @Override
             public Validation<B, ValidationError> validate(final I in) {
-                return self.validate(in).map(f).fold(
+                return self.validate(in).map(f).foldWrapped(
                         Validation::failure,
                         input -> input.validate(in)
                 );

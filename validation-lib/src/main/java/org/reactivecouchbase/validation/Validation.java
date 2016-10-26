@@ -100,11 +100,22 @@ public abstract class Validation<T, E> {
         return failure(getFailures());
     }
 
-    public <X> X fold(Function<List<E>, X> invalid, Function<T, X> valid) {
+    public <X> X foldWrapped(Function<List<E>, X> invalid, Function<T, X> valid) {
         if (isSuccess()) {
             return valid.apply(getSuccess());
         }
         return invalid.apply(getFailures());
+    }
+
+    public <X> X fold(Function<ValidationFailure<T, E>, X> onError, Function<ValidationSuccess<T, E>, X> onSuccess) {
+        if (this.isFailure()) {
+            return onError.apply(this.toFailure());
+        }
+        return onSuccess.apply(this.toSuccess());
+    }
+
+    public <X> X transform(Function<Validation<T, E>, X> trans) {
+        return trans.apply(this);
     }
 
     public <X> Validation<X, E> collect(E otherwise, Function<T, Option<X>> f) {
